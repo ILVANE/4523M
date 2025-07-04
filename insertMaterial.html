@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Material - Inventory Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="top-bar">
+    <div class="company-name">Smile & Sunshine</div>
+    <div class="user-container">
+        <div class="user-info">
+            <span class="username" id="userDisplay">Welcome, User!</span>
+        </div>
+        <img src="PJ-Staff - FVer/rdimage/Arisu.jpg" alt="User Profile" class="top-right-icon">
+    </div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+    <ul class="nav-list">
+        <li><a href="dashboard.php" class="nav-link">Dashboard</a></li>
+        <li><a href="insertItem.html" class="nav-link">Insert Item</a></li>
+        <li><a href="insertMaterial.html" class="nav-link" aria-current="page">Insert Material</a></li>
+        <li><a href="listMaterials.php" class="nav-link">Material List</a></li>
+        <li><a href="updateOrder.html" class="nav-link">Update Order</a></li>
+        <li><a href="generateReport.html" class="nav-link">Generate Report</a></li>
+        <li><a href="deleteItem.html" class="nav-link">Delete Item</a></li>
+    </ul>
+    <div class="logout-container">
+        <a href="#" class="btn-logout" id="logoutBtn">
+            <span class="logout-icon"></span>
+            <span>Logout</span>
+        </a>
+    </div>
+</nav>
+
+<main>
+    <div class="container">
+        <h1>Insert Material</h1>
+        <form action="insertMaterial.php" method="post" class="material-form" id="materialForm" autocomplete="off">
+            <div class="form-group">
+                <label>Material ID:</label>
+                <input type="text" value="Auto-generated" disabled>
+                <small>This will be assigned automatically.</small>
+            </div>
+            <div class="form-group">
+                <label for="materialName">Material Name:</label>
+                <input type="text" id="materialName" name="materialName" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="physicalQuantity">Physical Quantity:</label>
+                    <input type="number" id="physicalQuantity" name="physicalQuantity" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="reservedQuantity">Reserved Quantity:</label>
+                    <input type="number" id="reservedQuantity" name="reservedQuantity" min="0" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="unit">Unit:</label>
+                    <select id="unit" name="unit" required>
+                        <option value="">Select Unit</option>
+                        <option value="kg">Kilograms</option>
+                        <option value="g">Grams</option>
+                        <option value="m">Meters</option>
+                        <option value="cm">Centimeters</option>
+                        <option value="l">Liters</option>
+                        <option value="ml">Milliliters</option>
+                        <option value="pcs">Pieces</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reOrderLevel">Re-order Level:</label>
+                    <input type="number" id="reOrderLevel" name="reOrderLevel" min="0" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="materialDescription">Description (Optional):</label>
+                <textarea id="materialDescription" name="materialDescription" rows="3"></textarea>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="submitBtn">Submit</button>
+                <button type="reset" class="btn-secondary">Reset</button>
+            </div>
+        </form>
+        <!-- Floating Success/Error message -->
+        <div id="toastMsg" style="
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            background: #d4edda;
+            color: #155724;
+            padding: 16px 28px;
+            border-radius: 8px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+            font-size: 1.1rem;
+            min-width: 220px;
+            text-align: center;
+            transition: opacity .3s;
+        "></div>
+</main>
+<script>
+    // ...login/logout logic...
+    // AJAX Form Submission with Toast
+    document.getElementById('materialForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+
+        // Prepare form data
+        const formData = new FormData(form);
+
+        fetch('insertMaterial.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json()
+                .catch(() => {
+                    return { success: response.ok, message: response.ok ? "Material added successfully!" : "An error occurred." };
+                })
+            )
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message || ("Material added successfully!" + (data.id ? "<br>ID: " + data.id : "")), false);
+                    form.reset();
+                } else {
+                    showToast(data.message || "An error occurred.", true);
+                }
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                showToast("Network error. Please try again.", true);
+                submitBtn.disabled = false;
+            });
+    });
+
+    function showToast(message, isError) {
+        const toast = document.getElementById('toastMsg');
+        toast.innerHTML = message;
+        toast.style.background = isError ? '#f8d7da' : '#d4edda';
+        toast.style.color = isError ? '#721c24' : '#155724';
+        toast.style.display = 'block';
+        toast.style.opacity = 1;
+        setTimeout(() => {
+            toast.style.opacity = 0;
+            setTimeout(() => { toast.style.display = 'none'; }, 350);
+        }, 3500);
+    }
+</script>
+</body>
+</html>

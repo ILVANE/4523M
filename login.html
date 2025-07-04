@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Inventory Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .return-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+        .return-button:hover {
+            color: #0fbbff;
+        }
+        .login-container {
+            position: relative;
+        }
+    </style>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <button class="return-button" onclick="window.location.href='../index.html'">
+            ← Back to Home
+        </button>
+        
+        <div class="login-header">
+            <h1>Welcome Back</h1>
+            <p>Smile & Sunshine Inventory System</p>
+        </div>
+        
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="button" onclick="validateLogin()" class="btn-primary btn-block">Sign In</button>
+            
+            <div id="loginError" class="error-message" style="color: var(--danger-color); margin-top: 1rem; text-align: center; display: none;"></div>
+        </form>
+        
+        <div class="login-footer">
+            <p>© 2025 Smile & Sunshine. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced login validation
+        function validateLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('loginError');
+            
+            // validation
+            if (!username || !password) {
+                errorElement.textContent = "Please enter both username and password";
+                errorElement.style.display = "block";
+                return;
+            }
+            
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('username', username);
+            
+            // Show loading indicator
+            const button = document.querySelector('.btn-primary');
+            button.innerHTML = '<span class="loading-spinner"></span> Signing in...';
+            button.disabled = true;
+            
+            // Simulate server request
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 1000);
+        }
+        
+        // Allow login with Enter key
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                validateLogin();
+            }
+        });
+        
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'home.html';
+            }
+        });
+    </script>
+</body>
+</html>

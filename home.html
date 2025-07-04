@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Inventory Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="top-bar">
+        <div class="company-name">Smile & Sunshine</div>
+        <div class="user-container">
+            <div class="user-info">
+                <span class="username" id="userDisplay">Welcome, User!</span>
+            </div>
+            <img src="\PJ-Staff - FVer/rdimage/Arisu.jpg" alt="User Profile" class="top-right-icon">
+        </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <ul class="nav-list">
+          <li><a href="home.html" class="nav-link" aria-current="page">Dashboard</a></li>
+          <li><a href="insertItem.html" class="nav-link">Insert Item</a></li>
+          <li><a href="insertMaterial.html" class="nav-link">Insert Material</a></li>
+            <li><a href="listMaterials.php" class="nav-link">Material List</a></li>
+          <li><a href="updateOrder.html" class="nav-link">Update Order</a></li>
+          <li><a href="generateReport.html" class="nav-link">Generate Report</a></li>
+          <li><a href="deleteItem.html" class="nav-link">Delete Item</a></li>
+        </ul>
+
+        <div class="logout-container">
+          <a href="#" class="btn-logout" id="logoutBtn">
+            <span class="logout-icon"></span>
+            <span>Logout</span>
+          </a>
+        </div>
+      </nav>
+
+    <main>
+        <div class="container">
+            <h1>Dashboard Overview</h1>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-value" id="totalItems">1,248</div>
+                    <div class="stat-label">Total Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🧾</div>
+                    <div class="stat-value" id="pendingOrders">87</div>
+                    <div class="stat-label">Pending Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-value" id="lowStock">12</div>
+                    <div class="stat-label">Low Stock</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-value" id="monthlyRevenue">$24,587</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <h2>Recent Activity</h2>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-icon">➕</div>
+                        <div class="activity-details">
+                            <div class="activity-title">New product added</div>
+                            <div class="activity-meta">RE-Zero Figure • 15 minutes ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">📊</div>
+                        <div class="activity-details">
+                            <div class="activity-title">Monthly report generated</div>
+                            <div class="activity-meta">Today at 09:30 AM</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">✏️</div>
+                        <div class="activity-details">
+                            <div class="activity-title">Order #ORD-1028 updated</div>
+                            <div class="activity-meta">Yesterday at 4:45 PM</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2>Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="window.location.href='insertItem.html'">
+                        <span class="action-icon">➕</span>
+                        Add New Product
+                    </button>
+                    <button class="btn-secondary" onclick="window.location.href='generateReport.html'">
+                        <span class="action-icon">📋</span>
+                        Generate Report
+                    </button>
+                    <button class="btn-info" onclick="window.location.href='updateOrder.html'">
+                        <span class="action-icon">🔍</span>
+                        View Inventory
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Check login status
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Display username if available
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('userDisplay').textContent = `Welcome, ${username}!`;
+            }
+            
+            // Simulate data loading
+            simulateDataLoading();
+        });
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            window.location.href = 'login.html';
+        });
+        
+        // Simulate data loading with animation
+        function simulateDataLoading() {
+            const totalItems = document.getElementById('totalItems');
+            const pendingOrders = document.getElementById('pendingOrders');
+            const lowStock = document.getElementById('lowStock');
+            const monthlyRevenue = document.getElementById('monthlyRevenue');
+            
+            // Start with zeros
+            totalItems.textContent = '0';
+            pendingOrders.textContent = '0';
+            lowStock.textContent = '0';
+            monthlyRevenue.textContent = '$0';
+            
+            // Animate counting up
+            setTimeout(() => animateValue(totalItems, 0, 1248, 1500), 300);
+            setTimeout(() => animateValue(pendingOrders, 0, 87, 1500), 600);
+            setTimeout(() => animateValue(lowStock, 0, 12, 1500), 900);
+            setTimeout(() => {
+                animateValue(monthlyRevenue, 0, 24587, 1500, (val) => {
+                    return '$' + val.toLocaleString();
+                });
+            }, 1200);
+        }
+        
+        // Animation helper for counting up
+        function animateValue(element, start, end, duration, formatter = null) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                
+                if (formatter) {
+                    element.textContent = formatter(value);
+                } else {
+                    element.textContent = value.toLocaleString();
+                }
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+    </script>
+</body>
+</html>

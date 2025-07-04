@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Report - Inventory System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="top-bar">
+        <div class="company-name">Smile & Sunshine</div>
+        <div class="user-container">
+            <div class="user-info">
+                <span class="username" id="userDisplay">Welcome, User!</span>
+            </div>
+            <img src="\PJ-Staff - FVer/rdimage/Arisu.jpg" alt="User Profile" class="top-right-icon">
+        </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <ul class="nav-list">
+            <li><a href="dashboard.php" class="nav-link">Dashboard</a></li>
+            <li><a href="insertItem.html" class="nav-link">Insert Item</a></li>
+            <li><a href="insertMaterial.html" class="nav-link">Insert Material</a></li>
+            <li><a href="listMaterials.php" class="nav-link">Material List</a></li>
+            <li><a href="updateOrder.html" class="nav-link">Update Order</a></li>
+            <li><a href="generateReport.html" class="nav-link" aria-current="page">Generate Report</a></li>
+            <li><a href="deleteItem.html" class="nav-link">Delete Item</a></li>
+        </ul>
+        <div class="logout-container">
+            <a href="#" class="btn-logout" id="logoutBtn">
+              <span class="logout-icon"></span>
+              <span>Logout</span>
+            </a>
+          </div>
+        </nav>
+    </nav>
+
+    <main>
+        <div class="container">
+            <h1>Sales Report</h1>
+            
+            <div class="report-controls">
+                <div class="date-filter-group">
+                    <div class="form-group">
+                        <label for="startDate">From:</label>
+                        <input type="date" id="startDate" name="startDate" class="date-input" value="2023-05-01">
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">To:</label>
+                        <input type="date" id="endDate" name="endDate" class="date-input" value="2023-05-31">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reportType">Report Type:</label>
+                    <select id="reportType" name="reportType">
+                        <option value="sales" selected>Sales Report</option>
+                        <option value="inventory">Inventory Report</option>
+                        <option value="revenue">Revenue Analysis</option>
+                    </select>
+                </div>
+                <button type="button" class="btn-primary" id="generateBtn">Generate Report</button>
+                <button type="button" class="btn-secondary" id="exportBtn">Export PDF</button>
+            </div>
+
+            <section id="reportResults">
+                <div class="table-responsive">
+                    <table class="report-table" id="reportTable">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Item</th>
+                                <th>Image</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#ORD-1024</td>
+                                <td>Paper</td>
+                                <td><img src="\PJ-Staff - FVer/rdimage/1.jpg" class="product-thumbnail" alt="Product"></td>
+                                <td>15</td>
+                                <td class="amount-cell">$1,250.00</td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-1025</td>
+                                <td>Cotton</td>
+                                <td><img src="\PJ-Staff - FVer/rdimage/2.jpg" class="product-thumbnail" alt="Product"></td>
+                                <td>8</td>
+                                <td class="amount-cell">$899.20</td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-1026</td>
+                                <td>Wood</td>
+                                <td><img src="\PJ-Staff - FVer/rdimage/3.jpg" class="product-thumbnail" alt="Product"></td>
+                                <td>10</td>
+                                <td class="amount-cell">$800.00</td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-1027</td>
+                                <td>ABS</td>
+                                <td><img src="\PJ-Staff - FVer/rdimage/4.jpg" class="product-thumbnail" alt="Product"></td>
+                                <td>5</td>
+                                <td class="amount-cell">$450.50</td>
+                            </tr>
+                            <tr>
+                                <td>#ORD-1028</td>
+                                <td>Screw</td>
+                                <td><img src="\PJ-Staff - FVer/rdimage/5.jpg" class="product-thumbnail" alt="Product"></td>
+                                <td>7</td>
+                                <td class="amount-cell">$315.75</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="totals-row">
+                                <td colspan="3">Total</td>
+                                <td>45</td>
+                                <td class="amount-cell">$3,715.45</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                
+                <div class="report-summary" style="margin-top: 2rem;">
+                    <h2>Report Summary</h2>
+                    <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-value">$3,715.45</div>
+                            <div class="stat-label">Total Revenue</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-value">45</div>
+                            <div class="stat-label">Items Sold</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔄</div>
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Orders Processed</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Check login status
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Display username if available
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('userDisplay').textContent = `Welcome, ${username}!`;
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

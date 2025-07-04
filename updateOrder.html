@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - Inventory System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="top-bar">
+        <div class="company-name">Smile & Sunshine</div>
+        <div class="user-container">
+            <div class="user-info">
+                <span class="username" id="userDisplay">Welcome, User!</span>
+            </div>
+            <img src="/PJ-Staff - FVer/rdimage/Arisu.jpg" alt="User Profile" class="top-right-icon">
+        </div>
+    </header>
+
+    <nav class="sidebar" id="sidebar">
+        <ul class="nav-list">
+            <li><a href="dashboard.php" class="nav-link">Dashboard</a></li>
+            <li><a href="insertItem.html" class="nav-link">Insert Item</a></li>
+            <li><a href="insertMaterial.html" class="nav-link">Insert Material</a></li>
+            <li><a href="listMaterials.php" class="nav-link">Material List</a></li>
+            <li><a href="updateOrder.html" class="nav-link" aria-current="page">Update Order</a></li>
+            <li><a href="generateReport.html" class="nav-link">Generate Report</a></li>
+            <li><a href="deleteItem.html" class="nav-link">Delete Item</a></li>
+        </ul>
+        <div class="logout-container">
+            <a href="#" class="btn-logout" id="logoutBtn">
+              <span class="logout-icon"></span>
+              <span>Logout</span>
+            </a>
+          </div>
+        </nav>
+    </nav>
+
+    <main>
+        <div class="container">
+            <h1>Order Management</h1>
+            
+            <form class="order-form" id="orderForm">
+                <fieldset>
+                    <legend>Order Information</legend>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orderID">Order ID:</label>
+                            <input type="text" id="orderID" name="orderID" value="ORD1001" readonly>
+                            <button type="button" class="btn-info" id="findOrderBtn" style="margin-top: 10px;">Find Order</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="orderStatus">Order Status:</label>
+                            <select id="orderStatus" name="orderStatus">
+                                <option value="pending">Pending</option>
+                                <option value="processing" selected>Processing</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="orderDetails">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="customerName">Customer:</label>
+                                <input type="text" id="customerName" name="customerName" value="Arisu" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="orderDate">Order Date:</label>
+                                <input type="text" id="orderDate" name="orderDate" value="2023-05-15" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="orderTotal">Order Total:</label>
+                            <input type="text" id="orderTotal" name="orderTotal" value="$249.99" readonly>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset id="materialSection">
+                    <legend>Material Inventory</legend>
+                    <div class="table-responsive">
+                        <table class="inventory-table" id="inventoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Material Name</th>
+                                    <th>Used Qty</th>
+                                    <th>Physical Qty</th>
+                                    <th>Available Qty</th>
+                                    <th>Unit</th>
+                                    <th>Status</th>
+                                    <th>Reserved Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryBody">
+                                <tr>
+                                    <td>Plastic Resin</td>
+                                    <td>15</td>
+                                    <td>50</td>
+                                    <td>35</td>
+                                    <td>kg</td>
+                                    <td><span class="stock-alert">Low</span></td>
+                                    <td><input type="number" class="reserved-qty" value="5" min="0" max="50"></td>
+                                </tr>
+                                <tr>
+                                    <td>Metal Frame</td>
+                                    <td>8</td>
+                                    <td>25</td>
+                                    <td>17</td>
+                                    <td>pcs</td>
+                                    <td>Normal</td>
+                                    <td><input type="number" class="reserved-qty" value="3" min="0" max="25"></td>
+                                </tr>
+                                <tr>
+                                    <td>Paint (Blue)</td>
+                                    <td>3</td>
+                                    <td>10</td>
+                                    <td>7</td>
+                                    <td>ltr</td>
+                                    <td>Normal</td>
+                                    <td><input type="number" class="reserved-qty" value="2" min="0" max="10"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary" id="updateBtn">Update Order</button>
+                    <button type="button" class="btn-secondary" id="resetBtn">Reset</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Check login status
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Display username if available
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('userDisplay').textContent = `Welcome, ${username}!`;
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
